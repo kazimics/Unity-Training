@@ -44,3 +44,9 @@ TagManager:
   - name: Background
     uniqueID: 2089004721
     locked: 0
+  - name: Bird
+    uniqueID: 3786983525
+    locked: 0
+  - name: UI
+    uniqueID: 2340764229
+    locked: 0
