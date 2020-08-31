@@ -20,10 +20,10 @@ public class SpawnManager : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
         while (stopSpawn == false)
         {
-            Vector2 posPipeSpawn = new Vector2(0, Random.Range(-1f, 1.22f));
+            Vector2 posPipeSpawn = new Vector2(3.5f, Random.Range(-1f, 1.22f));
             GameObject newPipe = Instantiate(pipeObject, posPipeSpawn, Quaternion.identity);
-            pipeObject.transform.parent = floor.transform;
-            yield return new WaitForSeconds(3.0f);
+            newPipe.transform.parent = transform;
+            yield return new WaitForSeconds(4.5f);
         }
     }
 }
