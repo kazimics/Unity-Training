@@ -50,8 +50,11 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpforce * Time.deltaTime);
-            anim.SetBool("jumping", true);
+            if (coll.IsTouchingLayers(ground))
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpforce * Time.deltaTime);
+                anim.SetBool("jumping", true);
+            }
         }
     }
 
@@ -65,7 +68,7 @@ public class PlayerController : MonoBehaviour
                 anim.SetBool("jumping", false);
                 anim.SetBool("falling", true);
             }
-            
+
         }
         else if (coll.IsTouchingLayers(ground))
         {
