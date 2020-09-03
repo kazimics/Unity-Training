@@ -11,18 +11,23 @@ public class PlayerController : MonoBehaviour
     public float jumpforce = 10.0f;
     public LayerMask ground;
     private int cherry = 0;
+    private bool isHurt;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         coll = GetComponent<CircleCollider2D>();
+        isHurt = false;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        Movement();
+        if (!isHurt)
+        {
+            Movement();
+        }
         SwitchAnim();
     }
 
@@ -33,6 +38,29 @@ public class PlayerController : MonoBehaviour
             Destroy(collision.gameObject);
             cherry += 1;
         }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            if (anim.GetBool("falling"))
+            {
+                Destroy(collision.gameObject);
+                rb.velocity = new Vector2(rb.velocity.x, jumpforce * 0.6f * Time.deltaTime);
+                anim.SetBool("jumping", true);
+            }
+            else if (transform.position.x < collision.gameObject.transform.position.x)
+            {
+                rb.AddForce(new Vector2(-250, rb.velocity.y));
+                isHurt = true;
+            }
+            else if (transform.position.x > collision.gameObject.transform.position.x)
+            {
+                rb.AddForce(new Vector2(250, rb.velocity.y));
+                isHurt = true;
+            }
+        }
+
     }
 
     public int GetScore()
@@ -74,6 +102,16 @@ public class PlayerController : MonoBehaviour
                 anim.SetBool("falling", true);
             }
 
+        }
+        else if (isHurt)
+        {
+            anim.SetBool("hurting", true);
+            if (Mathf.Abs(rb.velocity.x) < 0.1f)
+            {
+                anim.SetBool("hurting", false);
+                anim.SetBool("idel", true);
+                isHurt = false;
+            }
         }
         else if (coll.IsTouchingLayers(ground))
         {
