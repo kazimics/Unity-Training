@@ -35,6 +35,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public int GetScore()
+    {
+        return cherry;
+    }
+
     void Movement()
     {
         float h = Input.GetAxis("Horizontal");
